@@ -34,7 +34,7 @@ O sistema adota a persona de um **Professor Acadêmico**: tom didático, rigor t
 
 ```
 PDF
- └─► OCR / Extração de texto
+ └─► OCR / Extração de texto (via OpenAI, Gemini ou OCR local)
       └─► Limpeza e normalização (JSON estruturado)
            └─► Embeddings (text-embedding-3-small)
                 └─► ChromaDB (banco vetorial)
@@ -51,9 +51,21 @@ PDF
 O processamento deve seguir esta ordem para que o Professor tenha fontes para consultar:
 
 ### 1. Extração e OCR
-Converte PDFs (nativos e imagéticos) em texto limpo no formato JSON.
+Converte PDFs em texto limpo no formato JSON. Escolha o método conforme sua necessidade:
+
+**OCR local** — sem custo de API
 ```bash
 python ingestion/processar_biblioteca_ocr_local.py
+```
+
+**Google Gemini** — alternativa via API Google, com fallback para processar_biblioteca_ocr_local.py caso haja erro de copyright
+```bash
+python ingestion/processar_biblioteca_gemini.py
+```
+
+**OpenAI GPT-4o** — alternativa via API OpenAI, com fallback para processar_biblioteca_ocr_local.py caso haja erro de copyright
+```bash
+python ingestion/processar_biblioteca_openai.py
 ```
 
 ### 2. Indexação Vetorial
