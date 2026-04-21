@@ -1,0 +1,97 @@
+# Librarian-AI 📚🤖
+
+**Librarian-AI** é um framework modular de **Retrieval-Augmented Generation (RAG)** projetado para transformar bibliotecas densas de PDFs em assistentes de conhecimento precisos e ferramentas de apoio à escrita autoral. 
+
+Diferente de chatbots genéricos, o Librarian-AI foca na **fidelidade bibliográfica**, garantindo que todas as respostas sejam fundamentadas em fontes verificadas e acompanhadas de citações formatadas profissionalmente.
+
+## 👨‍🏫 O Conceito: "Pergunte ao Professor"
+O sistema utiliza a persona de um **Professor Acadêmico** para interagir com o usuário. Esta escolha de design garante que o modelo mantenha um tom didático, rigor técnico e, acima de tudo, limite-se estritamente ao conhecimento contido na biblioteca curada (seu "conhecimento de cátedra"). 
+
+
+
+## 🌟 Diferenciais Técnicos
+
+* **Orquestração via LangGraph**: O fluxo de resposta não é linear; ele utiliza um grafo de estados para gerenciar a otimização da pergunta, a recuperação de documentos e a síntese final.
+* **ETL Inteligente e Limpeza de Artefatos**: Processamento avançado de PDFs (nativos e imagéticos) com remoção automática de ruídos de OCR e metadados de modelos de visão.
+* **Query Expansion (Otimização de Busca)**: Utiliza LLMs para reescrever perguntas simples em consultas técnicas, maximizando a recuperação semântica no banco vetorial.
+* **Citações ABNT Automáticas**: Sistema integrado para mapear fontes e gerar referências bibliográficas automaticamente conforme a norma **ABNT NBR 6023**.
+* **Arquitetura Modular**: Separação clara entre as camadas de ingestão, banco de dados vetorial e interface de conversação.
+
+
+
+### 📖 Base de Conhecimento de Exemplo (Dataset)
+
+Para fins de demonstração, validação do pipeline de OCR e testes da orquestração RAG, este projeto utiliza uma obra de relevância acadêmica global, licenciada para fins educacionais e disponível em acesso aberto:
+
+* **Obra:** *História Geral da África, Vol. I: Metodologia e pré-história da África*
+* **Autor/Organização:** UNESCO / MEC / UFSCar
+* **Ano da Edição (PT-BR):** 2010
+* **Fonte Original:** [Portal Domínio Público - Ministério da Educação (MEC)](https://dominiopublico.mec.gov.br/download/texto/ue000318.pdf)
+
+> **Nota Técnica:** Este arquivo foi escolhido por sua complexidade estrutural, permitindo testar a eficácia do sistema em lidar com textos densos, notas de rodapé e terminologia científica especializada.
+
+
+## 🛠️ Stack Tecnológica
+
+* **Linguagem:** Python 3.12+
+* **Orquestração de LLM:** LangChain & LangGraph (suporte para agentes e fluxos cíclicos).
+* **Modelos de Linguagem:** Google Gemini 2.5 Flash & OpenAI GPT-4o (Vision).
+* **Banco de Dados Vetorial:** ChromaDB.
+* **Embeddings:** OpenAI `text-embedding-3-small`.
+
+## 📂 Estrutura do Projeto
+
+* `ingestion/`: Scripts para conversão de PDF, limpeza de texto e população do banco vetorial.
+* `core/`: Lógica de busca semântica, filtragem por categoria e o grafo de orquestração do Professor.
+* `utils/`: Catálogo de fontes e motor de formatação bibliográfica ABNT.
+* `notebooks/`: Demonstrações interativas para testes e validação de resultados.
+
+Você tem total razão. Na empolgação de organizar a estrutura de pastas, acabei pulando etapas fundamentais do seu **pipeline de dados**. Para um portfólio de tecnologia, o fluxo de execução deve refletir exatamente a ordem de processamento dos dados.
+
+O fluxo correto é: **Extração (OCR) $\rightarrow$ Indexação (Vetorização) $\rightarrow$ Catálogo (Metadados) $\rightarrow$ Consulta (Agente).**
+
+Aqui está a versão corrigida da seção **Como Executar** para o seu `README.md`:
+
+---
+
+## 🚀 Como Executar
+
+### 1. Configuração Inicial
+```bash
+cp .env.example .env  # Adicione suas chaves API (Gemini/OpenAI)
+pip install -r requirements.txt
+```
+
+### 2. Pipeline de Dados (ETL)
+O processamento deve seguir esta ordem obrigatória para garantir que o Professor tenha fontes para consultar:
+
+1.  **Extração e OCR**: Converta seus PDFs em texto limpo (JSON).
+    ```bash
+    python ingestion/processar_biblioteca_ocr_local.py
+    ```
+2.  **Indexação Vetorial**: Carregue os textos processados no banco de dados ChromaDB.
+    ```bash
+    python ingestion/popular_db.py
+    ```
+3.  **Geração de Metadados**: Crie o catálogo de referências para garantir as citações ABNT.
+    ```bash
+    python ingestion/gerar_catalogo.py
+    ```
+
+### 3. Uso do Oráculo (Professor)
+Com a base populada, você pode interagir com o agente orquestrado:
+
+```python
+from core.professor import perguntar_ao_professor
+
+# O Professor utiliza o Grafo de Estados (LangGraph) para:
+# 1. Otimizar sua pergunta -> 2. Buscar no RAG -> 3. Gerar resposta ABNT
+resposta = perguntar_ao_professor("Qual a importância da tradição oral?", tema="historia")
+print(resposta)
+```
+
+---
+
+## 📜 Licença
+
+Distribuído sob a licença **MIT**. Veja o arquivo `LICENSE` para o texto completo.

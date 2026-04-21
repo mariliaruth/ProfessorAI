@@ -1,0 +1,19 @@
+{
+  "modelo": "text-embedding-3-small",
+  "preco_por_m_tokens": 0.02,
+  "data": "2026-04-20T17:40:31",
+  "total_tokens": 1315,
+  "total_chunks_uteis": 7,
+  "total_chunks_descartados": 1,
+  "custo_total_usd": 2.6e-05,
+  "livros": [
+    {
+      "livro": "Metodologia_e_pre-historia_da_africa.parcial",
+      "categoria": "amostra_aberta",
+      "chunks_uteis": 7,
+      "chunks_descartados": 1,
+      "tokens": 1315,
+      "custo_usd": 2.6e-05
+    }
+  ]
+}
